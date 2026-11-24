@@ -285,23 +285,45 @@ PolyBlue is engineered to feel as responsive as a native digital audio workstati
 ### Prerequisites
 - **Node.js 20+** and **npm 10+**
 
-### Universal 30-Second Install (Windows, Linux, macOS)
+### Download and Run (Windows, Linux, macOS)
+
+#### 1. Download the project
+
+Choose either method:
+
+- **Git (recommended):** open a terminal and clone the repository:
+  ```bash
+  git clone https://github.com/Gost-co/PolyBlue.git
+  cd PolyBlue
+  ```
+- **ZIP archive:** visit [github.com/Gost-co/PolyBlue](https://github.com/Gost-co/PolyBlue), select **Code → Download ZIP**, extract the archive, then open a terminal in the extracted project folder (usually named `PolyBlue-main`).
+
+#### 2. Install and build
+
+Install [Node.js 20 or newer](https://nodejs.org/) (npm 10+ is required), then run these commands from the project folder:
 
 ```bash
-git clone https://github.com/Gost-co/PolyBlue.git polyblue
-cd polyblue
 npm install
 npm run build
+```
+
+#### 3. Start PolyBlue
+
+```bash
 npm start
 ```
 
-Open **`http://localhost:4720`** in your browser.
+Keep that terminal window open while using the app. Open **http://localhost:4720** in your browser. On a computer without a Bluetooth adapter, PolyBlue starts in Virtual Radio Lab mode so you can try the interface with simulated devices.
 
-For live hot-reload development (`@polyblue/daemon` on `:4720` + Vite UI on `:5173`):
+#### Run in developer mode
+
+For live-reload development, run this instead of `npm start` (it starts the engine and web UI together):
 
 ```bash
 npm run dev
 ```
+
+Then open **http://localhost:5173**. Stop the running app with **Ctrl+C** in the terminal.
 
 ---
 
