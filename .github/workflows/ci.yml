@@ -2,52 +2,37 @@ name: CI
 
 on:
   push:
-    branches: ["**"]
+    branches: [main]
   pull_request:
+    branches: [main]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  verify:
+    name: Build & Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [20, 22, 24]
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Syntax-check all JavaScript
-        run: |
-          status=0
-          while IFS= read -r f; do
-            node --check "$f" || status=1
-          done < <(find . -name '*.js' -not -path './.git/*')
-          exit $status
-      - name: Validate tool wiring
-        run: node scripts/validate.js
-      - name: Smoke test (fake DOM)
-        run: node scripts/smoke-test.js
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
-  deploy-pages:
-    name: Deploy to GitHub Pages
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: test
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v7
-      - name: Assemble static site
-        run: |
-          mkdir -p _site
-          rsync -a --exclude='.git' --exclude='.github' --exclude='scripts' --exclude='_site' ./ _site/
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          path: _site
-      - id: deploy
-        uses: actions/deploy-pages@v4
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Run unit and integration tests
+        run: npm test
+
+      - name: Build all packages
+        run: npm run build

@@ -1,91 +1,48 @@
-# Contributing to DevForge
+# Contributing to PolyBlue
 
-Thanks for helping build DevForge! This project has a strict but simple
-philosophy, and following it keeps the project tiny, fast and easy to maintain.
+Thank you for your interest in contributing to PolyBlue. Contributions across platform drivers, sync algorithms, UI workflows, CLI commands, and documentation are welcome.
 
-## The philosophy
+## Development Setup
 
-1. **Zero dependencies.** No npm packages, no CDN scripts, no frameworks.
-   Everything is hand-rolled, dependency-free JavaScript, CSS and HTML.
-2. **Zero build step.** What you edit is what runs. If you can read the source,
-   you can ship the source.
-3. **Everything is local.** Tools never send data anywhere. Whatever you paste
-   into a tool stays in your browser.
-4. **One tool = one file.** Every tool is a self-contained file in
-   `assets/js/tools/`, registered with `DevKit.register()`.
-
-## Adding a new tool (≈30 lines)
-
-1. **Create** `assets/js/tools/your-tool.js`:
-
-   ```js
-   /* Tool: Your Tool — what it does in one line. */
-   "use strict";
-   (function () {
-     DevKit.register({
-       id: "your-tool",            // kebab-case, unique
-       name: "Your Tool",
-       category: "Data",           // Data | Text | Web & Style | Time | Security
-       description: "One sentence shown on the home cards.",
-       keywords: ["searchable", "keywords"],
-       icon: "zap",                // see the ICONS map in app.js
-       render(root) {
-         // Build your UI with DevKit.el() and append to `root`.
-         // Helpers: DevKit.el, DevKit.esc, DevKit.kvRow, DevKit.copyBtn,
-         //          DevKit.toast, DevKit.debounce, DevKit.setStatus
-       }
-       // Optional: destroy() { /* clear timers, listeners */ }
-     });
-   })();
-   ```
-
-2. **Register the script** in `index.html` (alphabetical order) and add the
-   file to the `CORE` precache list in `sw.js`.
-
-3. **Test & document:**
-   - `node scripts/validate.js` — checks wiring (script tag, sw.js, ids).
-   - `node scripts/smoke-test.js` — renders every tool in a fake DOM and
-     clicks every button. Add a seed value for your tool in
-     `scripts/smoke-test.js` (`SEEDS`) so its live handlers get exercised.
-   - Add a row to the tool table in `README.md`.
-
-That's it — the sidebar, home cards, command palette and routing pick your
-tool up automatically.
-
-## Guidelines
-
-- **Escape user content.** Any user-provided string that ends up in
-  `innerHTML` must go through `DevKit.esc()`. Better yet, build DOM nodes with
-  `DevKit.el()` and use `textContent`.
-- **Handle empty and invalid input gracefully.** Tools should show a muted
-  "Waiting for input…" state, never throw.
-- **Debounce** live reactions to typing (`DevKit.debounce(fn, 200)`).
-- **Clean up after yourself.** If you start timers or listeners, clear them in
-  `destroy()` (either on the tool object or returned from `render()`).
-- **Vanilla CSS.** Add shared styles to `assets/css/style.css`; reuse existing
-  classes (`.panel`, `.toolbar`, `.out-row`, `.badge`, …) before adding new ones.
-- **Keep it keyboard-friendly.** Buttons are real `<button>`s; add `title`
-  and `aria-label` attributes where the text alone isn't clear.
-
-## Development workflow
+Requirements:
+- Node.js 20 or newer
+- npm 10 or newer
+- Optional for native hardware testing:
+  - **Linux**: BlueZ 5.60+, PipeWire or PulseAudio (`bluetoothctl`, `pactl`, `pw-cli`)
+  - **Windows**: Windows 10/11 with Bluetooth 4.2+ / 5.x adapter and PowerShell 5.1+
+  - **macOS**: macOS 13+, Xcode Command Line Tools (`swift`), optional `blueutil`
 
 ```bash
-# Serve locally (any static server works — this is just the shortest one):
-python3 -m http.server 8000
-# then open http://localhost:8000
-
-# Validate + smoke test before opening a PR:
-node scripts/validate.js
-node scripts/smoke-test.js
+git clone https://github.com/Gost-co/DevForge.git polyblue
+cd polyblue
+npm install
+npm run dev
 ```
 
-CI (`.github/workflows/ci.yml`) runs both scripts on every push and pull
-request.
+When no physical Bluetooth controller is detected, the daemon starts in Virtual Radio mode so you can develop and test multi-device workflows on any workstation or CI runner.
 
-## Roadmap ideas
+## Verification Checklist
 
-Good first tools to contribute: Markdown preview, HTML entity encode/decode,
-number base converter, text statistics, QR code generator (hand-rolled!),
-URL-shortener decoder,slug generator, chmod calculator, HTTP status reference.
+Before opening a pull request, run:
 
-Questions? Open an issue. Happy hacking! 🔧
+```bash
+npm run typecheck
+npm test
+npm run build
+```
+
+## Project Layout
+
+- `packages/shared` — Domain types, SIG GATT registry, codec profiles, and sync engine math
+- `packages/daemon` — Multi-device connection engine, clock-drift sync coordinator, HTTP/WebSocket API, and OS drivers
+- `packages/cli` — Command-line client for automation and headless hosts
+- `packages/ui` — React + Vite interface with Web Audio calibration studio and Web Bluetooth support
+- `packages/desktop` — Electron cross-platform wrapper with system tray integration
+- `scripts` — Native OS audio sync helpers and installer scripts
+
+## Pull Request Guidelines
+
+- Keep changes focused and well scoped.
+- Add unit tests for new sync math, driver parsers, or state transitions.
+- Document any new API endpoints or CLI flags in `README.md`.
+- Test platform-specific driver changes against the `BluetoothDriver` contract.

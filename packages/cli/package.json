@@ -1,0 +1,19 @@
+{
+  "name": "@polyblue/cli",
+  "version": "1.1.0",
+  "type": "module",
+  "bin": {
+    "polyblue": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@polyblue/shared": "1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10"
+  }
+}
