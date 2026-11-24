@@ -8,7 +8,6 @@ import {
   Layers,
   Search,
   Settings2,
-  Sparkles,
   Star,
   Unlink,
   Volume2,
@@ -101,16 +100,16 @@ export function DeviceGrid({
     <div className="space-y-5 pb-24">
       <section className="pb-dashboard-intro flex flex-col sm:flex-row sm:items-end justify-between gap-5 px-1 pb-1">
         <div>
-          <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#71866b]">
+          <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#525252]">
             <span className="w-1.5 h-1.5 rounded-full bg-[#82967c]" /> PolyBlue Studio <span className="text-slate-400">/</span> Devices
           </div>
           <h2 className="mt-2 text-3xl sm:text-[2.45rem] leading-none font-medium tracking-[-.055em] text-slate-900 dark:text-slate-100">
-            Your devices, <span className="text-[#71866b]">in sync.</span>
+            Your devices, <span className="text-[#525252]">in sync.</span>
           </h2>
           <p className="mt-2.5 text-sm text-slate-500 dark:text-slate-400">A clear view of every connection, signal and audio link.</p>
         </div>
         <div className="pb-connection-summary flex items-center gap-3 self-start sm:self-auto px-4 py-3 rounded-2xl border border-slate-200/80 dark:border-[#363d38] bg-white/80 dark:bg-[#202522]">
-          <span className={`w-2.5 h-2.5 rounded-full ${adapter.powered ? 'bg-[#82967c] shadow-[0_0_0_4px_rgba(130,150,124,.13)]' : 'bg-amber-400'}`} />
+          <span className={`w-2.5 h-2.5 rounded-full ${adapter.powered ? 'bg-[#525252] shadow-[0_0_0_4px_rgba(82,82,82,.12)]' : 'bg-amber-400'}`} />
           <div>
             <div className="text-sm font-semibold text-slate-800 dark:text-slate-100">{adapter.powered ? `${adapter.activeLinks} active links` : 'Bluetooth is off'}</div>
             <div className="text-[11px] text-slate-500 dark:text-slate-400">{adapter.powered ? `${devices.length} devices in range` : 'Turn on your adapter to connect'}</div>
@@ -118,8 +117,8 @@ export function DeviceGrid({
         </div>
       </section>
       {/* Top KPI Summary Strip */}
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
-        <div className="p-4 rounded-2xl border border-slate-200 dark:border-[#1F293D] bg-white dark:bg-[#0E1420]">
+      <div className="pb-kpi-grid grid grid-cols-2 xl:grid-cols-4 gap-3">
+        <div className="pb-kpi-card pb-kpi-card--hero p-4 rounded-2xl border border-slate-200 dark:border-[#1F293D] bg-white dark:bg-[#0E1420]">
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
             <span>Simultaneous Links</span>
             <Link2 className="w-4 h-4 text-cyan-500" />
@@ -135,7 +134,7 @@ export function DeviceGrid({
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl border border-slate-200 dark:border-[#1F293D] bg-white dark:bg-[#0E1420]">
+        <div className="pb-kpi-card pb-kpi-card--sync p-4 rounded-2xl border border-slate-200 dark:border-[#1F293D] bg-white dark:bg-[#0E1420]">
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
             <span>Audio Phase Delta</span>
             <Clock className={`w-4 h-4 ${sync.syncLocked ? 'text-emerald-500' : 'text-amber-500'}`} />
@@ -157,9 +156,9 @@ export function DeviceGrid({
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl border border-slate-200 dark:border-[#1F293D] bg-white dark:bg-[#0E1420]">
+        <div className="pb-kpi-card p-4 rounded-2xl border border-slate-200 dark:border-[#1F293D] bg-white dark:bg-[#0E1420]">
           <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
-            <span>Piconet Throughput</span>
+            <span>Radio Throughput</span>
             <Zap className="w-4 h-4 text-blue-500" />
           </div>
           <div className="mt-2 flex items-baseline gap-2">
@@ -173,21 +172,22 @@ export function DeviceGrid({
           </div>
         </div>
 
-        <div className="p-4 rounded-2xl border border-cyan-500/25 bg-gradient-to-br from-cyan-500/10 via-white to-blue-500/5 dark:from-cyan-500/12 dark:via-[#0E1420] dark:to-blue-600/10 flex flex-col justify-between">
-          <div className="flex items-center justify-between text-xs text-cyan-700 dark:text-cyan-300 font-medium">
-            <span>Zero-Drift Sync Engine</span>
-            <Sparkles className="w-4 h-4" />
+        <div className="pb-kpi-card pb-kpi-card--action p-4 rounded-2xl border border-slate-200 dark:border-[#1F293D] bg-white dark:bg-[#0E1420] flex flex-col justify-between">
+          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-medium">
+            <span>Audio alignment</span>
+            <Clock className="w-4 h-4" />
           </div>
+          <div className="mt-2 text-sm font-medium text-slate-800 dark:text-slate-100">{sync.syncLocked ? 'All outputs are aligned' : 'Fine-tune your outputs'}</div>
           <div className="mt-2.5 flex items-center gap-2">
             <button
               onClick={onAutoAlign}
-              className="flex-1 px-3 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold text-xs transition-colors cursor-pointer"
+              className="flex-1 px-3 py-1.5 rounded-lg bg-[#1c1c1c] hover:bg-[#333] text-white font-semibold text-xs cursor-pointer"
             >
-              Auto-Align
+              Align now
             </button>
             <button
               onClick={onOpenSyncStudio}
-              className="px-3 py-1.5 rounded-lg border border-cyan-500/35 text-cyan-700 dark:text-cyan-300 hover:bg-cyan-500/15 text-xs font-medium transition-colors cursor-pointer"
+              className="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-[#363d38] text-slate-700 dark:text-slate-200 hover:bg-[#ededed] dark:hover:bg-[#292f2b] text-xs font-medium cursor-pointer"
             >
               Studio
             </button>
