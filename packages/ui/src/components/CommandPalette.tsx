@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Layers, Link2, Radar, Search, Sparkles, Unlink } from 'lucide-react';
+import { Layers, Link2, Moon, Radar, Search, Settings, Sparkles, Unlink } from 'lucide-react';
 import type { PolyBlueSnapshot } from '@polyblue/shared';
 import type { NavTab } from './Sidebar';
 
@@ -8,6 +8,7 @@ interface CommandPaletteProps {
   onClose: () => void;
   snapshot: PolyBlueSnapshot;
   onSelectTab: (tab: NavTab) => void;
+  onToggleTheme: () => void;
   onScan: () => void;
   onAutoAlign: () => void;
   onConnectMany: (ids: string[]) => void;
@@ -29,6 +30,7 @@ export function CommandPalette({
   onClose,
   snapshot,
   onSelectTab,
+  onToggleTheme,
   onScan,
   onAutoAlign,
   onConnectMany,
@@ -90,6 +92,30 @@ export function CommandPalette({
         category: 'Navigate',
         run: () => onSelectTab('radar'),
         icon: Radar
+      },
+      {
+        id: 'go-groups',
+        label: 'Open Multi-Device Scenes',
+        hint: 'One-click presets',
+        category: 'Navigate',
+        run: () => onSelectTab('groups'),
+        icon: Layers
+      },
+      {
+        id: 'go-settings',
+        label: 'Open Settings & System Diagnostics',
+        hint: 'Drivers, watchdog, LAN & backup',
+        category: 'Settings',
+        run: () => onSelectTab('diagnostics'),
+        icon: Settings
+      },
+      {
+        id: 'toggle-theme',
+        label: 'Toggle Dark / Light Studio Theme',
+        hint: 'Appearance preference',
+        category: 'Settings',
+        run: onToggleTheme,
+        icon: Moon
       }
     ];
 
@@ -116,7 +142,7 @@ export function CommandPalette({
     }
 
     return items;
-  }, [snapshot, onScan, onAutoAlign, onConnectMany, onDisconnectMany, onSelectTab, onActivateGroup]);
+  }, [snapshot, onScan, onAutoAlign, onConnectMany, onDisconnectMany, onSelectTab, onToggleTheme, onActivateGroup]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

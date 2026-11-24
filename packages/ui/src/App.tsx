@@ -199,9 +199,13 @@ export function App() {
             {activeTab === 'diagnostics' && (
               <DiagnosticsPanel
                 snapshot={snapshot}
+                darkMode={darkMode}
+                onToggleTheme={() => setDarkMode((d) => !d)}
                 onUpdateSettings={(patch) => pb.updateSettings(patch)}
+                onUpdateSync={(patch) => pb.updateSync(patch)}
                 onExportConfig={pb.exportConfig}
                 onImportConfig={pb.importConfig}
+                onResetConfig={pb.resetConfig}
               />
             )}
           </div>
@@ -242,6 +246,7 @@ export function App() {
         onClose={() => setPaletteOpen(false)}
         snapshot={snapshot}
         onSelectTab={setActiveTab}
+        onToggleTheme={() => setDarkMode((d) => !d)}
         onScan={() => void pb.startScan(8000)}
         onAutoAlign={() => void pb.autoAlignAll()}
         onConnectMany={(ids) => void pb.connectMany(ids)}

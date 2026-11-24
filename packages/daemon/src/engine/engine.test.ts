@@ -194,4 +194,59 @@ describe('PolyBlue Daemon & Multi-Device Sync Integration', () => {
     expect(receivedIds.has('7C:96:D2:4A:1B:88')).toBe(true);
     expect(receivedIds.has('40:98:AD:9E:33:12')).toBe(true);
   });
+
+  it('updates, clamps, persists, imports, and resets all daemon settings & proximity hysteresis', async () => {
+    const patchRes = await fetch(`${baseUrl}/api/settings`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        lanRemoteEnabled: false,
+        autoReconnectOnStartup: false,
+        staggerPagingMs: 260,
+        watchdogIntervalMs: 4400
+      })
+    });
+    expect(patchRes.status).toBe(200);
+    const updated = await patchRes.json();
+    expect(updated.lanRemoteEnabled).toBe(false);
+    expect(updated.autoReconnectOnStartup).toBe(false);
+    expect(updated.staggerPagingMs).toBe(260);
+    expect(updated.watchdogIntervalMs).toBe(4400);
+
+    // Loopback access stays permitted when lanRemoteEnabled is false
+    const healthRes = await fetch(`${baseUrl}/api/health`);
+    expect(healthRes.status).toBe(200);
+
+    // Proximity hysteresis prevents disconnect threshold from exceeding connect threshold - 5 dBm
+    const proxRes = await fetch(`${baseUrl}/api/devices/${encodeURIComponent('7C:96:D2:4A:1B:88')}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        proximity: { enabled: true, autoReconnect: true, autoConnectRssi: -75, autoDisconnectRssi: -60 }
+      })
+    });
+    const proxDev = await proxRes.json();
+    expect(proxDev.proximity.autoDisconnectRssi).toBeLessThanOrEqual(proxDev.proximity.autoConnectRssi - 5);
+
+    // Import sanitizes out-of-range settings
+    const impRes = await fetch(`${baseUrl}/api/config/import`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        settings: { staggerPagingMs: 99999, watchdogIntervalMs: 50 }
+      })
+    });
+    const impSnap = (await impRes.json()) as PolyBlueSnapshot;
+    expect(impSnap.settings.staggerPagingMs).toBe(600);
+    expect(impSnap.settings.watchdogIntervalMs).toBe(1000);
+
+    // Reset restores clean factory defaults
+    const resetRes = await fetch(`${baseUrl}/api/config/reset`, { method: 'POST' });
+    expect(resetRes.status).toBe(200);
+    const resetSnap = (await resetRes.json()) as PolyBlueSnapshot;
+    expect(resetSnap.settings.lanRemoteEnabled).toBe(true);
+    expect(resetSnap.settings.autoReconnectOnStartup).toBe(true);
+    expect(resetSnap.settings.staggerPagingMs).toBe(140);
+    expect(resetSnap.settings.watchdogIntervalMs).toBe(2200);
+  });
 });

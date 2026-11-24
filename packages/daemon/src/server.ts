@@ -42,6 +42,11 @@ function parseDeviceIdArray(raw: unknown): string[] {
   return raw.filter((item): item is string => typeof item === 'string' && item.trim().length > 0);
 }
 
+function isLoopbackAddress(addr: string | undefined): boolean {
+  if (!addr) return true;
+  return addr === '127.0.0.1' || addr === '::1' || addr === '::ffff:127.0.0.1';
+}
+
 export async function createPolyBlueServer(options?: ServerOptions): Promise<RunningPolyBlueServer> {
   const host = options?.host ?? process.env.POLYBLUE_HOST ?? '0.0.0.0';
   const port = options?.port ?? Number.parseInt(process.env.POLYBLUE_PORT ?? '4720', 10);
@@ -56,6 +61,15 @@ export async function createPolyBlueServer(options?: ServerOptions): Promise<Run
   const app = express();
   app.use(cors());
   app.use(express.json({ limit: '1mb' }));
+
+  // Enforce LAN Companion Remote access setting (always permits localhost & local reverse proxies)
+  app.use((req, res, next) => {
+    if (!engine.getSettings().lanRemoteEnabled && !isLoopbackAddress(req.socket.remoteAddress)) {
+      res.status(403).json({ error: 'LAN Companion Remote is disabled in PolyBlue Settings.' });
+      return;
+    }
+    next();
+  });
 
   // ---- Health & Snapshot ----
   app.get(
@@ -264,6 +278,14 @@ export async function createPolyBlueServer(options?: ServerOptions): Promise<Run
     })
   );
 
+  app.post(
+    '/api/config/reset',
+    asyncRoute(async (_req, res) => {
+      const snap = await engine.resetToDefaults();
+      res.json(snap);
+    })
+  );
+
   // ---- Production UI Static Serving ----
   if (options?.serveUi !== false) {
     const uiDist = path.resolve(__dirname, '../../ui/dist');
@@ -287,7 +309,11 @@ export async function createPolyBlueServer(options?: ServerOptions): Promise<Run
   const httpServer = http.createServer(app);
   const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
 
-  wss.on('connection', async (socket: WebSocket) => {
+  wss.on('connection', async (socket: WebSocket, req) => {
+    if (!engine.getSettings().lanRemoteEnabled && !isLoopbackAddress(req.socket.remoteAddress)) {
+      socket.close(1008, 'LAN Companion Remote disabled');
+      return;
+    }
     try {
       const snapshot = await engine.getSnapshot();
       const event: ServerEvent = { type: 'snapshot', payload: snapshot };

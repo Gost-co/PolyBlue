@@ -715,6 +715,17 @@ export function usePolyBlue() {
     [runAction, showToast]
   );
 
+  const resetConfig = useCallback(
+    () =>
+      runAction('reset', async () => {
+        const res = await apiJson<PolyBlueSnapshot>('/api/config/reset', { method: 'POST' });
+        setSnapshot(res);
+        showToast('All settings restored to defaults', 'info');
+        return res;
+      }),
+    [runAction, showToast]
+  );
+
   return {
     snapshot,
     wsConnected,
@@ -742,6 +753,7 @@ export function usePolyBlue() {
     updateSettings,
     registerExternalDevice,
     exportConfig,
-    importConfig
+    importConfig,
+    resetConfig
   };
 }

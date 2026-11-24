@@ -218,6 +218,17 @@ export function InspectorDrawer({
               </label>
             </div>
 
+            <label className="flex items-center justify-between gap-2 text-[11px] text-slate-600 dark:text-slate-300 cursor-pointer pt-1">
+              <span>Auto-Connect When Back in Range</span>
+              <input
+                type="checkbox"
+                disabled={!device.proximity.enabled}
+                checked={device.proximity.autoReconnect}
+                onChange={(e) => onUpdate(device.id, { proximity: { autoReconnect: e.target.checked } })}
+                className="accent-cyan-500 disabled:opacity-40"
+              />
+            </label>
+
             <div className="grid grid-cols-2 gap-3 text-[11px]">
               <div>
                 <div className="flex justify-between font-mono text-slate-500 mb-1">
@@ -229,7 +240,14 @@ export function InspectorDrawer({
                   min={-80}
                   max={-40}
                   value={device.proximity.autoConnectRssi}
-                  onChange={(e) => onUpdate(device.id, { proximity: { autoConnectRssi: Number(e.target.value) } })}
+                  onChange={(e) => {
+                    const nextConnect = Number(e.target.value);
+                    const patch: Record<string, number> = { autoConnectRssi: nextConnect };
+                    if (device.proximity.autoDisconnectRssi > nextConnect - 5) {
+                      patch.autoDisconnectRssi = Math.max(-98, nextConnect - 5);
+                    }
+                    onUpdate(device.id, { proximity: patch });
+                  }}
                   className="pb-slider w-full"
                 />
               </div>
@@ -241,8 +259,8 @@ export function InspectorDrawer({
                 <input
                   type="range"
                   min={-98}
-                  max={-70}
-                  value={device.proximity.autoDisconnectRssi}
+                  max={Math.min(-65, device.proximity.autoConnectRssi - 5)}
+                  value={Math.min(device.proximity.autoDisconnectRssi, device.proximity.autoConnectRssi - 5)}
                   onChange={(e) => onUpdate(device.id, { proximity: { autoDisconnectRssi: Number(e.target.value) } })}
                   className="pb-slider w-full"
                 />

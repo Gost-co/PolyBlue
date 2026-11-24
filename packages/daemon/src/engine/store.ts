@@ -6,6 +6,7 @@ import type {
   ChannelRouting,
   DaemonSettings,
   DeviceGroup,
+  DriverMode,
   EqualizerBands,
   ProximityRule
 } from '@polyblue/shared';
@@ -34,6 +35,14 @@ export interface PersistedState {
   };
   groups: DeviceGroup[];
   devicePrefs: Record<string, SavedDevicePrefs>;
+  lastConnectedIds: string[];
+}
+
+const VALID_DRIVERS: DriverMode[] = ['auto', 'linux', 'windows', 'macos', 'virtual'];
+
+function clampFinite(value: unknown, fallback: number, min: number, max: number): number {
+  if (typeof value !== 'number' || !Number.isFinite(value)) return fallback;
+  return Math.max(min, Math.min(max, Math.round(value)));
 }
 
 const DEFAULT_GROUPS: DeviceGroup[] = [
@@ -84,7 +93,7 @@ export function createDefaultState(): PersistedState {
       lanRemoteEnabled: true,
       staggerPagingMs: 140,
       autoReconnectOnStartup: true,
-      watchdogIntervalMs: 3000
+      watchdogIntervalMs: 2200
     },
     syncOptions: {
       enabled: true,
@@ -95,7 +104,37 @@ export function createDefaultState(): PersistedState {
       linkedVolume: true
     },
     groups: structuredClone(DEFAULT_GROUPS),
-    devicePrefs: {}
+    devicePrefs: {},
+    lastConnectedIds: []
+  };
+}
+
+function sanitizeSettings(raw: Partial<DaemonSettings> | undefined, fallback: DaemonSettings): DaemonSettings {
+  const mode = raw?.driverMode && VALID_DRIVERS.includes(raw.driverMode) ? raw.driverMode : fallback.driverMode;
+  return {
+    driverMode: mode,
+    lanRemoteEnabled:
+      typeof raw?.lanRemoteEnabled === 'boolean' ? raw.lanRemoteEnabled : fallback.lanRemoteEnabled,
+    staggerPagingMs: clampFinite(raw?.staggerPagingMs, fallback.staggerPagingMs, 40, 600),
+    autoReconnectOnStartup:
+      typeof raw?.autoReconnectOnStartup === 'boolean'
+        ? raw.autoReconnectOnStartup
+        : fallback.autoReconnectOnStartup,
+    watchdogIntervalMs: clampFinite(raw?.watchdogIntervalMs, fallback.watchdogIntervalMs, 1000, 30000)
+  };
+}
+
+function sanitizeSyncOptions(
+  raw: Partial<PersistedState['syncOptions']> | undefined,
+  fallback: PersistedState['syncOptions']
+): PersistedState['syncOptions'] {
+  return {
+    enabled: typeof raw?.enabled === 'boolean' ? raw.enabled : fallback.enabled,
+    autoAlign: typeof raw?.autoAlign === 'boolean' ? raw.autoAlign : fallback.autoAlign,
+    driftCorrection: typeof raw?.driftCorrection === 'boolean' ? raw.driftCorrection : fallback.driftCorrection,
+    safetyBufferMs: clampFinite(raw?.safetyBufferMs, fallback.safetyBufferMs, 0, 80),
+    masterVolume: clampFinite(raw?.masterVolume, fallback.masterVolume, 0, 100),
+    linkedVolume: typeof raw?.linkedVolume === 'boolean' ? raw.linkedVolume : fallback.linkedVolume
   };
 }
 
@@ -119,10 +158,13 @@ export class StateStore {
         const defaults = createDefaultState();
         return {
           version: 1,
-          settings: { ...defaults.settings, ...(parsed.settings ?? {}) },
-          syncOptions: { ...defaults.syncOptions, ...(parsed.syncOptions ?? {}) },
+          settings: sanitizeSettings(parsed.settings, defaults.settings),
+          syncOptions: sanitizeSyncOptions(parsed.syncOptions, defaults.syncOptions),
           groups: Array.isArray(parsed.groups) ? parsed.groups : defaults.groups,
-          devicePrefs: parsed.devicePrefs ?? {}
+          devicePrefs: parsed.devicePrefs && typeof parsed.devicePrefs === 'object' ? parsed.devicePrefs : {},
+          lastConnectedIds: Array.isArray(parsed.lastConnectedIds)
+            ? parsed.lastConnectedIds.filter((x): x is string => typeof x === 'string' && x.length > 0)
+            : []
         };
       }
     } catch {
@@ -180,11 +222,23 @@ export class StateStore {
     const defaults = createDefaultState();
     this.state = {
       version: 1,
-      settings: { ...defaults.settings, ...(incoming.settings ?? {}) },
-      syncOptions: { ...defaults.syncOptions, ...(incoming.syncOptions ?? {}) },
+      settings: sanitizeSettings(incoming.settings, defaults.settings),
+      syncOptions: sanitizeSyncOptions(incoming.syncOptions, defaults.syncOptions),
       groups: Array.isArray(incoming.groups) ? incoming.groups : this.state.groups,
-      devicePrefs: incoming.devicePrefs ?? this.state.devicePrefs
+      devicePrefs:
+        incoming.devicePrefs && typeof incoming.devicePrefs === 'object'
+          ? incoming.devicePrefs
+          : this.state.devicePrefs,
+      lastConnectedIds: Array.isArray(incoming.lastConnectedIds)
+        ? incoming.lastConnectedIds.filter((x): x is string => typeof x === 'string' && x.length > 0)
+        : this.state.lastConnectedIds
     };
+    this.save(true);
+    return this.state;
+  }
+
+  reset(): PersistedState {
+    this.state = createDefaultState();
     this.save(true);
     return this.state;
   }
