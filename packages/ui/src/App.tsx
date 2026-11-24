@@ -127,7 +127,11 @@ export function App() {
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{pb.errorBanner}</span>
               </div>
-              <button onClick={pb.clearError} className="p-1 hover:opacity-75 cursor-pointer">
+              <button
+                onClick={pb.clearError}
+                aria-label="Dismiss error"
+                className="p-1 hover:opacity-75 cursor-pointer"
+              >
                 <X className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -139,7 +143,11 @@ export function App() {
                 <CheckCircle2 className="w-4 h-4 shrink-0" />
                 <span>{webBt.statusMessage}</span>
               </div>
-              <button onClick={webBt.clearStatus} className="p-1 hover:opacity-75 cursor-pointer">
+              <button
+                onClick={webBt.clearStatus}
+                aria-label="Dismiss status"
+                className="p-1 hover:opacity-75 cursor-pointer"
+              >
                 <X className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -226,7 +234,11 @@ export function App() {
             <Info className="w-4 h-4 text-cyan-500 shrink-0" />
           )}
           <span>{pb.toast.message}</span>
-          <button onClick={pb.clearToast} className="p-0.5 text-slate-400 hover:text-slate-700 dark:hover:text-white cursor-pointer">
+          <button
+            onClick={pb.clearToast}
+            aria-label="Dismiss notification"
+            className="p-0.5 text-slate-400 hover:text-slate-700 dark:hover:text-white cursor-pointer"
+          >
             <X className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -237,7 +249,10 @@ export function App() {
         onClose={() => setInspectedDeviceId(null)}
         onConnect={(id) => void pb.connectMany([id])}
         onDisconnect={(id) => void pb.disconnectMany([id])}
-        onRemove={(id) => void pb.removeDevice(id)}
+        onRemove={(id) => {
+          setInspectedDeviceId(null);
+          void pb.removeDevice(id);
+        }}
         onUpdate={(id, patch) => pb.updateDevice(id, patch)}
       />
 

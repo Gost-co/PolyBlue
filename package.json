@@ -19,12 +19,13 @@
     "dev": "concurrently -k -n daemon,ui -c cyan,green \"npm run dev:daemon\" \"npm run dev:ui\"",
     "dev:daemon": "npm --workspace=@polyblue/daemon run dev",
     "dev:ui": "npm --workspace=@polyblue/ui run dev",
-    "build": "npm --workspace=@polyblue/shared run build && npm --workspace=@polyblue/daemon run build && npm --workspace=@polyblue/cli run build && npm --workspace=@polyblue/ui run build",
+    "build:shared": "npm --workspace=@polyblue/shared run build",
+    "build": "npm run build:shared && npm --workspace=@polyblue/daemon run build && npm --workspace=@polyblue/cli run build && npm --workspace=@polyblue/ui run build",
     "start": "npm --workspace=@polyblue/daemon run start",
     "cli": "npm --workspace=@polyblue/cli run start --",
     "desktop": "npm --workspace=@polyblue/desktop run start",
-    "typecheck": "npm --workspace=@polyblue/shared run typecheck && npm --workspace=@polyblue/daemon run typecheck && npm --workspace=@polyblue/cli run typecheck && npm --workspace=@polyblue/ui run typecheck",
-    "test": "npm --workspace=@polyblue/shared run test && npm --workspace=@polyblue/daemon run test",
+    "typecheck": "npm run build:shared && npm --workspace=@polyblue/shared run typecheck && npm --workspace=@polyblue/daemon run typecheck && npm --workspace=@polyblue/cli run typecheck && npm --workspace=@polyblue/ui run typecheck",
+    "test": "npm run build:shared && npm --workspace=@polyblue/shared run test && npm --workspace=@polyblue/daemon run test",
     "clean": "rm -rf packages/*/dist"
   },
   "devDependencies": {

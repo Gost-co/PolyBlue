@@ -14,7 +14,7 @@
 
 <br />
 
-[![CI](https://github.com/Gost-co/DevForge/actions/workflows/ci.yml/badge.svg)](https://github.com/Gost-co/DevForge/actions/workflows/ci.yml)
+[![CI](https://github.com/Gost-co/PolyBlue/actions/workflows/ci.yml/badge.svg)](https://github.com/Gost-co/PolyBlue/actions/workflows/ci.yml)
 [![Version](https://img.shields.io/badge/Version-1.1.0-22D3EE.svg?style=flat-square)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-06B6D4.svg?style=flat-square)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D20-10B981.svg?style=flat-square&logo=node.js&logoColor=white)](package.json)
@@ -91,6 +91,8 @@ Modern laptops and desktops ship with Bluetooth 5.2–5.4 radios capable of main
 
 PolyBlue Studio is organized into **five specialized workspaces**, an on-demand **Device Inspector Drawer**, a keyboard-driven **Command Palette (`⌘K` / `Ctrl+K`)**, and a **System Tray Desktop Shell**.
 
+> 📄 For a deeper, click-by-click walkthrough of every workspace (including what each control does, when to use it, and how the data flows between sections), see **[docs/SECTIONS.md](docs/SECTIONS.md)**.
+
 ### 1. About the Devices Hub (`Devices`)
 > *Parallel multi-device connection manager with zero-jitter card layout.*
 
@@ -142,11 +144,11 @@ PolyBlue Studio is organized into **five specialized workspaces**, an on-demand 
 
 ---
 
-### 6. About System Diagnostics, Drivers & LAN Remote (`System`)
+### 6. About Settings, System Diagnostics, Drivers & LAN Remote (`Settings`)
 > *Cross-platform backend visibility, radio tuning, phone remote access, and profile portability.*
 
 - **Native Stack & Tooling Probe**: Displays host OS, active driver backend, audio sync engine, and detected native utilities (`bluetoothctl`, `pactl`, `pw-cli`, `powershell`, `blueutil`, `system_profiler`).
-- **Live Backend Switcher & HCI Tuning**: Switch between `Auto-Detect OS`, `Linux BlueZ + PipeWire`, `Windows WinRT + WASAPI`, `macOS CoreAudio`, and `Virtual Radio Lab`, and tune the parallel HCI stagger interval (`40–400 ms`).
+- **Live Backend Switcher & HCI Tuning**: Switch between `Auto-Detect OS`, `Linux BlueZ + PipeWire`, `Windows WinRT + WASAPI`, `macOS CoreAudio`, and `Virtual Radio Lab`, and tune the parallel HCI stagger interval (`40–600 ms`).
 - **LAN Companion Remote**: Lists ready-to-open `http://<lan-ip>:4720` addresses so any phone or tablet on the same Wi-Fi can act as a real-time remote control.
 - **Portable JSON Profiles**: Export and import all scenes, latency calibrations, EQ curves, proximity rules, and custom aliases as a single `polyblue-config-YYYY-MM-DD.json` file.
 
@@ -284,7 +286,7 @@ PolyBlue is engineered to feel as responsive as a native digital audio workstati
 ### Universal 30-Second Install (Windows, Linux, macOS)
 
 ```bash
-git clone https://github.com/Gost-co/DevForge.git polyblue
+git clone https://github.com/Gost-co/PolyBlue.git polyblue
 cd polyblue
 npm install
 npm run build
@@ -498,6 +500,7 @@ polyblue/
 │   ├── macos-coreaudio-sync.swift # macOS CoreAudio Multi-Output Aggregate Device helper
 │   ├── install.sh                 # Linux / macOS quick installer
 │   └── install.ps1                # Windows PowerShell quick installer
+├── docs/SECTIONS.md      # In-depth guide to every Studio section, control, and workflow
 ├── docs/assets/          # Vector hero, feature pillars, studio preview, sync timeline & architecture graphics
 └── .github/workflows/    # Multi-OS CI matrix (Ubuntu, Windows, macOS)
 ```
@@ -507,7 +510,7 @@ polyblue/
 ## Verification & Testing
 
 ```bash
-npm run typecheck   # Strict TypeScript checks across all 4 packages
+npm run typecheck   # Strict TypeScript checks across all 4 packages (builds @polyblue/shared first)
 npm test            # Unit tests (sync math, Kalman drift, NaN guards, RF budget) + daemon API & WS tests
 npm run build       # Production compilation for shared, daemon, CLI, and Vite UI bundles
 ```

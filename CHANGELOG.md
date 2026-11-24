@@ -2,6 +2,23 @@
 
 All notable changes to PolyBlue are documented in this file.
 
+## [Unreleased]
+
+### Added
+- Added `docs/SECTIONS.md`, an in-depth guide to every Studio section, its controls, state flow, persistence model, and recommended workflows.
+- Linked the new Studio section guide from the README "About Every Studio Section" overview.
+
+### Fixed
+- Fixed a fresh-clone failure where `npm run typecheck` and `npm test` could not resolve `@polyblue/shared` because the shared package was never built first; both scripts now build `@polyblue/shared` before checking/testing.
+- Fixed Auto-Align wiping every device's manual fine-trim offset; it now clears only the Kalman drift estimators and relocks phase around the existing acoustic calibration.
+- Hardened profile import and scene creation: malformed scenes, null members, unknown codecs, invalid routing values, and out-of-range numbers are now sanitized instead of reaching the UI and crashing render loops.
+- Typed the Settings, Sync Studio, Device Grid, and Inspector patch callbacks against the real `DaemonSettings`, `SyncConfig`, and `DevicePatch` contracts instead of `Record<string, unknown>`.
+- Fixed export/import error reporting in Settings so a rejected profile shows the daemon error instead of always claiming invalid JSON.
+- Aligned the Settings slider ranges with the daemon's accepted clamps (`staggerPagingMs` `40–600 ms`, `watchdogIntervalMs` `1–30 s`) so imported values no longer leave the slider thumb out of sync with its label.
+- Fixed the invalid `scale-115` Tailwind utility on scene accent swatches (`scale-110`).
+- Clamped the Command Palette highlight when a live snapshot shrinks the filtered action list.
+- Corrected the README CI badge and clone URL to point at `Gost-co/PolyBlue` instead of the old `DevForge` repository.
+
 ## [1.1.0] - 2026-11-24
 
 ### Changed

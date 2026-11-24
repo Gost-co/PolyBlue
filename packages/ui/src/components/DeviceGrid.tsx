@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { getCodecSpec, type BluetoothDevice, type PolyBlueSnapshot } from '@polyblue/shared';
 import { DeviceIcon, SignalBars } from './DeviceIcon';
+import type { DevicePatch } from '../hooks/usePolyBlue';
 
 type FilterTab = 'all' | 'connected' | 'audio' | 'peripherals' | 'favorites';
 
@@ -27,7 +28,7 @@ interface DeviceGridProps {
   onSelectIds: (ids: string[]) => void;
   onConnectMany: (ids: string[]) => void;
   onDisconnectMany: (ids: string[]) => void;
-  onUpdateDevice: (id: string, patch: Record<string, unknown>) => void;
+  onUpdateDevice: (id: string, patch: DevicePatch) => void;
   onInspectDevice: (device: BluetoothDevice) => void;
   onAutoAlign: () => void;
   onSaveSelectionAsGroup: (ids: string[]) => void;

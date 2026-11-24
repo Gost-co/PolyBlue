@@ -24,7 +24,7 @@ import { MacOSCoreBluetoothDriver } from '../drivers/macos.js';
 import type { BluetoothDriver } from '../drivers/types.js';
 import { VirtualRadioDriver } from '../drivers/virtual.js';
 import { WindowsWinRTDriver } from '../drivers/windows.js';
-import { StateStore, type PersistedState } from './store.js';
+import { StateStore, sanitizeGroupMembers, type PersistedState } from './store.js';
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -577,6 +577,8 @@ export class PolyBlueEngine extends EventEmitter {
   /**
    * Auto-Align resets per-device drift accumulators, enables sync lock, and recalculates
    * exact delay compensation so every connected output lands on the identical target clock.
+   * User fine-trim offsets are preserved: Auto-Align relocks phase around the existing
+   * acoustic calibration instead of discarding it.
    */
   async autoAlignAll(): Promise<SyncConfig> {
     this.syncState.enabled = true;
@@ -590,12 +592,6 @@ export class PolyBlueEngine extends EventEmitter {
       linkedVolume: this.syncState.linkedVolume
     };
     this.store.save();
-    for (const dev of this.devicesCache) {
-      if (dev.connected && dev.audio.supportsAudio) {
-        dev.audio.manualOffsetMs = 0;
-        this.saveDevicePref(dev);
-      }
-    }
     this.driftEstimators.clear();
     this.syncState.calibratedAt = Date.now();
     await this.recomputeSync(true);
@@ -647,8 +643,15 @@ export class PolyBlueEngine extends EventEmitter {
   // ---- Device Groups ("Scenes") ----
 
   createGroup(input: Omit<DeviceGroup, 'id' | 'createdAt' | 'lastActivatedAt'>): DeviceGroup {
+    const members = sanitizeGroupMembers(input.members);
+    if (members.length === 0) {
+      throw new Error('Scene must contain at least one valid device member.');
+    }
+    const name = input.name?.trim() || 'Untitled Scene';
     const group: DeviceGroup = {
       ...input,
+      name,
+      members,
       id: `grp-${Date.now().toString(36)}`,
       createdAt: Date.now(),
       lastActivatedAt: null

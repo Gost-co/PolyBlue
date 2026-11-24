@@ -16,14 +16,14 @@ import {
   Upload,
   XCircle
 } from 'lucide-react';
-import type { DriverMode, PolyBlueSnapshot } from '@polyblue/shared';
+import type { DaemonSettings, DriverMode, PolyBlueSnapshot, SyncConfig } from '@polyblue/shared';
 
 interface DiagnosticsPanelProps {
   snapshot: PolyBlueSnapshot;
   darkMode: boolean;
   onToggleTheme: () => void;
-  onUpdateSettings: (patch: Record<string, unknown>) => void;
-  onUpdateSync: (patch: Record<string, unknown>) => void;
+  onUpdateSettings: (patch: Partial<DaemonSettings>) => void;
+  onUpdateSync: (patch: Partial<SyncConfig>) => void;
   onExportConfig: () => Promise<Record<string, unknown>>;
   onImportConfig: (cfg: Record<string, unknown>) => Promise<unknown>;
   onResetConfig: () => Promise<unknown>;
@@ -48,20 +48,25 @@ export function DiagnosticsPanel({
   onResetConfig
 }: DiagnosticsPanelProps) {
   const { diagnostics, adapter, settings, sync } = snapshot;
-  const [importStatus, setImportStatus] = useState<{ tone: 'ok' | 'err'; text: string } | null>(null);
+  const [configStatus, setConfigStatus] = useState<{ tone: 'ok' | 'err'; text: string } | null>(null);
   const [confirmReset, setConfirmReset] = useState(false);
   const [copiedUrl, setCopiedUrl] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
 
   const handleExport = async () => {
-    const cfg = await onExportConfig();
-    const blob = new Blob([JSON.stringify(cfg, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `polyblue-config-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    try {
+      const cfg = await onExportConfig();
+      const blob = new Blob([JSON.stringify(cfg, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `polyblue-config-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      setConfigStatus({ tone: 'ok', text: 'Configuration profile exported.' });
+    } catch {
+      setConfigStatus({ tone: 'err', text: 'Could not export the PolyBlue configuration profile.' });
+    }
   };
 
   const handleImport = async (file: File) => {
@@ -69,9 +74,15 @@ export function DiagnosticsPanel({
       const text = await file.text();
       const parsed = JSON.parse(text) as Record<string, unknown>;
       await onImportConfig(parsed);
-      setImportStatus({ tone: 'ok', text: `Imported configuration from ${file.name}` });
-    } catch {
-      setImportStatus({ tone: 'err', text: 'Invalid PolyBlue configuration JSON file.' });
+      setConfigStatus({ tone: 'ok', text: `Imported configuration from ${file.name}` });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : '';
+      setConfigStatus({
+        tone: 'err',
+        text: message
+          ? `Import failed: ${message}`
+          : 'Invalid PolyBlue configuration JSON file.'
+      });
     } finally {
       if (fileRef.current) fileRef.current.value = '';
     }
@@ -138,7 +149,7 @@ export function DiagnosticsPanel({
               <input
                 type="range"
                 min={40}
-                max={400}
+                max={600}
                 step={10}
                 value={settings.staggerPagingMs}
                 onChange={(e) => onUpdateSettings({ staggerPagingMs: Number(e.target.value) })}
@@ -161,9 +172,9 @@ export function DiagnosticsPanel({
               <input
                 type="range"
                 min={1000}
-                max={15000}
+                max={30000}
                 step={200}
-                value={Math.min(15000, settings.watchdogIntervalMs)}
+                value={settings.watchdogIntervalMs}
                 onChange={(e) => onUpdateSettings({ watchdogIntervalMs: Number(e.target.value) })}
                 className="pb-slider w-full"
               />
@@ -393,7 +404,9 @@ export function DiagnosticsPanel({
                 <button
                   onClick={() => {
                     setConfirmReset(false);
-                    void onResetConfig();
+                    void onResetConfig().catch(() =>
+                      setConfigStatus({ tone: 'err', text: 'Could not reset PolyBlue to factory defaults.' })
+                    );
                   }}
                   className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-rose-500 hover:bg-rose-400 text-white text-xs font-semibold cursor-pointer"
                 >
@@ -416,9 +429,9 @@ export function DiagnosticsPanel({
               </button>
             )}
           </div>
-          {importStatus && (
-            <p className={`text-xs font-mono ${importStatus.tone === 'ok' ? 'text-emerald-500' : 'text-rose-400'}`}>
-              {importStatus.text}
+          {configStatus && (
+            <p className={`text-xs font-mono ${configStatus.tone === 'ok' ? 'text-emerald-500' : 'text-rose-400'}`}>
+              {configStatus.text}
             </p>
           )}
         </div>
