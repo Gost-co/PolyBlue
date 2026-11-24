@@ -108,6 +108,11 @@ describe('PolyBlue Daemon & Multi-Device Sync Integration', () => {
     const sync = await alignRes.json();
     expect(sync.syncLocked).toBe(true);
     expect(sync.maxPhaseErrorMs).toBe(0);
+
+    // Auto-Align relocks phase around the existing fine trim; it must not wipe user calibration.
+    const alignedState = (await (await fetch(`${baseUrl}/api/state`)).json()) as PolyBlueSnapshot;
+    const alignedSony = alignedState.devices.find((d) => d.id === '7C:96:D2:4A:1B:88');
+    expect(alignedSony?.audio.manualOffsetMs).toBe(18);
   });
 
   it('persists linked master volume from 0% recovery and ignores NaN numeric payloads', async () => {
@@ -193,6 +198,73 @@ describe('PolyBlue Daemon & Multi-Device Sync Integration', () => {
 
     expect(receivedIds.has('7C:96:D2:4A:1B:88')).toBe(true);
     expect(receivedIds.has('40:98:AD:9E:33:12')).toBe(true);
+  });
+
+  it('sanitizes malformed scenes from imports and rejects scenes without valid members', async () => {
+    // A group whose only member is null must be rejected instead of stored.
+    const badCreateRes = await fetch(`${baseUrl}/api/groups`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: 'Broken Scene', members: [null] })
+    });
+    expect(badCreateRes.status).toBe(400);
+
+    const importRes = await fetch(`${baseUrl}/api/config/import`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        groups: [
+          null,
+          {
+            id: 'grp-sanitized',
+            name: '  Sanitized Scene  ',
+            accent: 'not-a-color',
+            members: [
+              null,
+              {
+                deviceId: '7C:96:D2:4A:1B:88',
+                volume: 999,
+                routing: 'not-a-routing',
+                manualOffsetMs: 999,
+                codec: 'NOT_A_CODEC',
+                eq: { preset: 'not-a-preset', bassDb: 99, midDb: -99 }
+              }
+            ]
+          }
+        ],
+        devicePrefs: {
+          '7C:96:D2:4A:1B:88': 'not-an-object',
+          '40:98:AD:9E:33:12': { volume: 'not-a-number', favorite: true }
+        }
+      })
+    });
+    expect(importRes.status).toBe(200);
+
+    const snap = (await importRes.json()) as PolyBlueSnapshot;
+    expect(snap.groups).toHaveLength(1);
+    expect(snap.groups[0].id).toBe('grp-sanitized');
+    expect(snap.groups[0].name).toBe('Sanitized Scene');
+    expect(snap.groups[0].accent).toBe('cyan');
+    expect(snap.groups[0].members).toHaveLength(1);
+    expect(snap.groups[0].members[0]).toMatchObject({
+      deviceId: '7C:96:D2:4A:1B:88',
+      volume: 100,
+      routing: 'stereo',
+      manualOffsetMs: 250
+    });
+    expect(snap.groups[0].members[0].codec).toBeUndefined();
+    expect(snap.groups[0].members[0].eq).toMatchObject({
+      preset: 'custom',
+      bassDb: 12,
+      midDb: -12
+    });
+
+    const exportRes = await fetch(`${baseUrl}/api/config/export`);
+    const exported = (await exportRes.json()) as {
+      devicePrefs: Record<string, Record<string, unknown>>;
+    };
+    expect(exported.devicePrefs['7C:96:D2:4A:1B:88']).toBeUndefined();
+    expect(exported.devicePrefs['40:98:AD:9E:33:12']).toEqual({ favorite: true });
   });
 
   it('updates, clamps, persists, imports, and resets all daemon settings & proximity hysteresis', async () => {

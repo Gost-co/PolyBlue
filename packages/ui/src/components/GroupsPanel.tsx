@@ -165,7 +165,7 @@ export function GroupsPanel({
                     type="button"
                     onClick={() => setAccent(color)}
                     className={`w-6 h-6 rounded-full border-2 cursor-pointer transition-transform ${
-                      accent === color ? 'scale-115 border-white ring-2 ring-cyan-500' : 'border-transparent opacity-70'
+                      accent === color ? 'scale-110 border-white ring-2 ring-cyan-500' : 'border-transparent opacity-70'
                     } ${
                       color === 'cyan'
                         ? 'bg-cyan-400'

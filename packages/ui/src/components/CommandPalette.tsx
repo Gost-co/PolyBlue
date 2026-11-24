@@ -159,6 +159,12 @@ export function CommandPalette({
     setActiveIndex(0);
   }, [query]);
 
+  // Keep the highlighted row valid when the live snapshot shrinks the filtered list
+  // (e.g. a device disconnects while the palette is open).
+  useEffect(() => {
+    setActiveIndex((index) => Math.min(index, Math.max(0, filtered.length - 1)));
+  }, [filtered.length]);
+
   useEffect(() => {
     if (!open) return;
     const onGlobalKey = (e: KeyboardEvent) => {

@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { getCodecSpec, type AudioCodecId, type BluetoothDevice } from '@polyblue/shared';
 import { DeviceIcon, SignalBars } from './DeviceIcon';
+import type { DevicePatch } from '../hooks/usePolyBlue';
 
 interface InspectorDrawerProps {
   device: BluetoothDevice | null;
@@ -20,7 +21,7 @@ interface InspectorDrawerProps {
   onConnect: (id: string) => void;
   onDisconnect: (id: string) => void;
   onRemove: (id: string) => void;
-  onUpdate: (id: string, patch: Record<string, unknown>) => void;
+  onUpdate: (id: string, patch: DevicePatch) => void;
 }
 
 export function InspectorDrawer({

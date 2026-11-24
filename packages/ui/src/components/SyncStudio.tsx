@@ -20,18 +20,20 @@ import {
   type BluetoothDevice,
   type ChannelRouting,
   type EqPresetId,
-  type PolyBlueSnapshot
+  type PolyBlueSnapshot,
+  type SyncConfig
 } from '@polyblue/shared';
 import { useAudioSyncLab, type TestSourceMode } from '../hooks/useAudioSyncLab';
+import type { DevicePatch } from '../hooks/usePolyBlue';
 import { DeviceIcon } from './DeviceIcon';
 
 const TRACE_COLORS = ['#22D3EE', '#10B981', '#A78BFA', '#F59E0B', '#FB7185', '#60A5FA'];
 
 interface SyncStudioProps {
   snapshot: PolyBlueSnapshot;
-  onUpdateSync: (patch: Record<string, unknown>) => void;
+  onUpdateSync: (patch: Partial<SyncConfig>) => void;
   onAutoAlign: () => void;
-  onUpdateDevice: (id: string, patch: Record<string, unknown>) => void;
+  onUpdateDevice: (id: string, patch: DevicePatch) => void;
   onConnectMany: (ids: string[]) => void;
 }
 
@@ -485,7 +487,7 @@ function SyncDeviceStrip({
   routingOptions: Array<{ id: ChannelRouting; label: string }>;
   eqOpen: boolean;
   onToggleEq: () => void;
-  onUpdate: (patch: Record<string, unknown>) => void;
+  onUpdate: (patch: DevicePatch) => void;
 }) {
   const spec = getCodecSpec(device.audio.codec);
   const adjustedBaseMs = Math.max(5, device.audio.intrinsicLatencyMs + device.audio.manualOffsetMs);
