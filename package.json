@@ -1,0 +1,36 @@
+{
+  "name": "polyblue",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Cross-platform simultaneous multi-device Bluetooth manager with zero-drift audio sync engine for Windows, Linux, and macOS.",
+  "license": "MIT",
+  "workspaces": [
+    "packages/shared",
+    "packages/daemon",
+    "packages/cli",
+    "packages/ui",
+    "packages/desktop"
+  ],
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n daemon,ui -c cyan,green \"npm run dev:daemon\" \"npm run dev:ui\"",
+    "dev:daemon": "npm --workspace=@polyblue/daemon run dev",
+    "dev:ui": "npm --workspace=@polyblue/ui run dev",
+    "build": "npm --workspace=@polyblue/shared run build && npm --workspace=@polyblue/daemon run build && npm --workspace=@polyblue/cli run build && npm --workspace=@polyblue/ui run build",
+    "start": "npm --workspace=@polyblue/daemon run start",
+    "cli": "npm --workspace=@polyblue/cli run start --",
+    "desktop": "npm --workspace=@polyblue/desktop run start",
+    "typecheck": "npm --workspace=@polyblue/shared run typecheck && npm --workspace=@polyblue/daemon run typecheck && npm --workspace=@polyblue/cli run typecheck && npm --workspace=@polyblue/ui run typecheck",
+    "test": "npm --workspace=@polyblue/shared run test && npm --workspace=@polyblue/daemon run test",
+    "clean": "rm -rf packages/*/dist"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.9"
+  }
+}

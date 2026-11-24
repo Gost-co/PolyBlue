@@ -1,4 +1,22 @@
-# OS cruft
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+out/
+release/
+*.tsbuildinfo
+
+# Runtime state & logs
+.polyblue/
+*.log
+npm-debug.log*
+
+# Coverage & test artifacts
+coverage/
+
+# OS files
 .DS_Store
 Thumbs.db
 
@@ -6,7 +24,9 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+*.swo
 
-# Local tooling caches
-node_modules/
-__pycache__/
+# Environment
+.env
+.env.local
+.env.*.local

@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --pb-bg: #f8fafc;
+    --pb-surface: #ffffff;
+    --pb-elevated: #f1f5f9;
+    --pb-border: #e2e8f0;
+    --pb-text: #0f172a;
+    --pb-muted: #64748b;
+  }
+
+  .dark {
+    --pb-bg: #080b11;
+    --pb-surface: #0e131d;
+    --pb-elevated: #151c2b;
+    --pb-border: #222d42;
+    --pb-text: #f1f5f9;
+    --pb-muted: #8b9bb4;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--pb-bg);
+    color: var(--pb-text);
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  .font-mono {
+    font-family: "JetBrains Mono", "SF Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Precision range sliders */
+input[type="range"].pb-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  border-radius: 9999px;
+  background: rgba(148, 163, 184, 0.24);
+  outline: none;
+  cursor: pointer;
+  touch-action: none;
+}
+
+input[type="range"].pb-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 9999px;
+  background: #22d3ee;
+  border: 2px solid #080b11;
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.25);
+  cursor: pointer;
+  transition: transform 0.14s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.14s ease, box-shadow 0.14s ease;
+}
+
+input[type="range"].pb-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.16);
+  background: #67e8f9;
+  box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.25);
+}
+
+input[type="range"].pb-slider:active::-webkit-slider-thumb {
+  transform: scale(1.22);
+  box-shadow: 0 0 0 6px rgba(34, 211, 238, 0.28);
+}
+
+input[type="range"].pb-slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 9999px;
+  background: #22d3ee;
+  border: 2px solid #080b11;
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.25);
+  cursor: pointer;
+  transition: transform 0.14s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.14s ease;
+}
+
+/* Smooth GPU-composited UI transitions */
+@keyframes pbFadeUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes pbSlideInRight {
+  from {
+    opacity: 0.4;
+    transform: translate3d(28px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes pbPopIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes pbBackdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.pb-fade-up {
+  animation: pbFadeUp 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.pb-slide-in-right {
+  animation: pbSlideInRight 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.pb-pop-in {
+  animation: pbPopIn 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.pb-backdrop-in {
+  animation: pbBackdropIn 160ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-fade-up,
+  .pb-slide-in-right,
+  .pb-pop-in,
+  .pb-backdrop-in {
+    animation: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Custom subtle scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.45);
+}
