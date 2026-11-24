@@ -99,6 +99,24 @@ export function DeviceGrid({
 
   return (
     <div className="space-y-5 pb-24">
+      <section className="pb-dashboard-intro flex flex-col sm:flex-row sm:items-end justify-between gap-5 px-1 pb-1">
+        <div>
+          <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#71866b]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#82967c]" /> PolyBlue Studio <span className="text-slate-400">/</span> Devices
+          </div>
+          <h2 className="mt-2 text-3xl sm:text-[2.45rem] leading-none font-medium tracking-[-.055em] text-slate-900 dark:text-slate-100">
+            Your devices, <span className="text-[#71866b]">in sync.</span>
+          </h2>
+          <p className="mt-2.5 text-sm text-slate-500 dark:text-slate-400">A clear view of every connection, signal and audio link.</p>
+        </div>
+        <div className="pb-connection-summary flex items-center gap-3 self-start sm:self-auto px-4 py-3 rounded-2xl border border-slate-200/80 dark:border-[#363d38] bg-white/80 dark:bg-[#202522]">
+          <span className={`w-2.5 h-2.5 rounded-full ${adapter.powered ? 'bg-[#82967c] shadow-[0_0_0_4px_rgba(130,150,124,.13)]' : 'bg-amber-400'}`} />
+          <div>
+            <div className="text-sm font-semibold text-slate-800 dark:text-slate-100">{adapter.powered ? `${adapter.activeLinks} active links` : 'Bluetooth is off'}</div>
+            <div className="text-[11px] text-slate-500 dark:text-slate-400">{adapter.powered ? `${devices.length} devices in range` : 'Turn on your adapter to connect'}</div>
+          </div>
+        </div>
+      </section>
       {/* Top KPI Summary Strip */}
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
         <div className="p-4 rounded-2xl border border-slate-200 dark:border-[#1F293D] bg-white dark:bg-[#0E1420]">

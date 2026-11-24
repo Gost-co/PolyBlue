@@ -55,7 +55,9 @@ Modern laptops and desktops ship with Bluetooth 5.2–5.4 radios capable of main
 **PolyBlue** was built to fix this permanently with an open, hardware-agnostic, local-first architecture. It gives you one unified control plane to **connect 2 to 7+ Bluetooth devices simultaneously**, **eliminate audio time difference across mixed brands**, **split any two speakers into Left/Right stereo**, and **monitor every radio link in real time** — all running locally with zero accounts, zero cloud dependencies, and zero telemetry.
 
 <div align="center">
-  <img src="docs/assets/ui-preview.svg" alt="PolyBlue Studio UI showing Simultaneous Multi-Device Hub, 60fps Phase Alignment Oscilloscope, Split Stereo Matrix, and Spatial RF Proximity Radar" width="100%" />
+  <img src="docs/assets/ui-preview.svg" alt="PolyBlue Studio interface preview: warm neutral dashboard with device cards, audio phase monitor, and RF proximity radar" width="100%" />
+  <br />
+  <sub>PolyBlue Studio · a calmer, warm-neutral interface for multi-device audio and Bluetooth control</sub>
 </div>
 
 ---
