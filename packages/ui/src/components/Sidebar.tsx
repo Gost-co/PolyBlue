@@ -1,10 +1,10 @@
 import {
   AlertTriangle,
   BluetoothConnected,
-  Cpu,
   Layers,
   Play,
   Radar,
+  Settings,
   Sliders,
   Terminal
 } from 'lucide-react';
@@ -26,7 +26,7 @@ const NAV_ITEMS: Array<{ id: NavTab; label: string; desc: string; icon: typeof B
   { id: 'sync', label: 'Sync Studio', desc: 'Zero-drift audio', icon: Sliders },
   { id: 'radar', label: 'RF Radar', desc: 'Spatial & signal', icon: Radar },
   { id: 'groups', label: 'Scenes', desc: 'One-click presets', icon: Layers },
-  { id: 'diagnostics', label: 'System', desc: 'OS drivers & LAN', icon: Cpu }
+  { id: 'diagnostics', label: 'Settings', desc: 'Drivers, LAN & prefs', icon: Settings }
 ];
 
 const ACCENT_DOT: Record<string, string> = {

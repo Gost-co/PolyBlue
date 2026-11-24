@@ -72,9 +72,37 @@ export class PolyBlueEngine extends EventEmitter {
     this.probe = await probeEnvironment();
     await this.loadDriver(this.store.get().settings.driverMode);
 
+    // Honor autoReconnectOnStartup for previously connected paired devices
+    const settings = this.store.get().settings;
+    if (settings.autoReconnectOnStartup && this.store.get().lastConnectedIds.length > 0) {
+      const toReconnect = this.store
+        .get()
+        .lastConnectedIds.filter((id) => {
+          const dev = this.devicesCache.find((d) => d.id === id);
+          return Boolean(dev && dev.paired && !dev.connected);
+        });
+      if (toReconnect.length > 0) {
+        this.log('info', `Auto-reconnecting ${toReconnect.length} previously active device(s)...`);
+        await this.connectMany(toReconnect);
+      }
+    }
+
+    this.restartTelemetryTimer();
+  }
+
+  private restartTelemetryTimer(): void {
+    if (this.telemetryTimer) {
+      clearInterval(this.telemetryTimer);
+      this.telemetryTimer = null;
+    }
+    const intervalMs = Math.max(1000, Math.min(30000, this.store.get().settings.watchdogIntervalMs));
     this.telemetryTimer = setInterval(() => {
       void this.tickTelemetry();
-    }, 2200);
+    }, intervalMs);
+  }
+
+  getSettings(): DaemonSettings {
+    return { ...this.store.get().settings };
   }
 
   async shutdown(): Promise<void> {
@@ -288,6 +316,15 @@ export class PolyBlueEngine extends EventEmitter {
     await Promise.all(tasks);
     this.devicesCache = await this.driver.getDevices();
     this.applySavedDevicePrefs();
+    this.syncLastConnectedIds();
+
+    // Auto-align newly joined audio devices when Auto-Align on Connect is enabled
+    if (connected.length > 0 && this.syncState.autoAlign) {
+      this.syncState.enabled = true;
+      this.store.get().syncOptions.enabled = true;
+      this.store.save();
+    }
+
     await this.recomputeSync(true);
     this.emitEvent({ type: 'snapshot', payload: await this.getSnapshot() });
 
@@ -315,8 +352,14 @@ export class PolyBlueEngine extends EventEmitter {
     );
     this.devicesCache = await this.driver.getDevices();
     this.applySavedDevicePrefs();
+    this.syncLastConnectedIds();
     await this.recomputeSync(true);
     this.emitEvent({ type: 'snapshot', payload: await this.getSnapshot() });
+  }
+
+  private syncLastConnectedIds(): void {
+    this.store.get().lastConnectedIds = this.devicesCache.filter((d) => d.connected).map((d) => d.id);
+    this.store.save();
   }
 
   async pairDevice(deviceId: string): Promise<BluetoothDevice> {
@@ -332,6 +375,7 @@ export class PolyBlueEngine extends EventEmitter {
     this.devicesCache = this.devicesCache.filter((d) => d.id !== deviceId);
     this.driftEstimators.delete(deviceId);
     delete this.store.get().devicePrefs[deviceId];
+    this.store.get().lastConnectedIds = this.store.get().lastConnectedIds.filter((id) => id !== deviceId);
     this.store.save();
     await this.recomputeSync(true);
     this.emitEvent({ type: 'device:removed', payload: { id: deviceId } });
@@ -386,6 +430,10 @@ export class PolyBlueEngine extends EventEmitter {
       const ad = finiteNumber(patch.proximity.autoDisconnectRssi);
       if (ac !== undefined) nextProx.autoConnectRssi = Math.max(-90, Math.min(-30, Math.round(ac)));
       if (ad !== undefined) nextProx.autoDisconnectRssi = Math.max(-100, Math.min(-55, Math.round(ad)));
+      // Prevent hysteresis inversion where disconnect threshold >= connect threshold
+      if (nextProx.autoDisconnectRssi > nextProx.autoConnectRssi - 5) {
+        nextProx.autoDisconnectRssi = Math.max(-100, nextProx.autoConnectRssi - 5);
+      }
       dev.proximity = nextProx;
     }
 
@@ -665,6 +713,7 @@ export class PolyBlueEngine extends EventEmitter {
   async updateSettings(patch: Partial<DaemonSettings>): Promise<DaemonSettings> {
     const current = this.store.get().settings;
     const driverChanged = patch.driverMode && patch.driverMode !== current.driverMode;
+    const prevWatchdog = current.watchdogIntervalMs;
 
     if (patch.driverMode && ['auto', 'linux', 'windows', 'macos', 'virtual'].includes(patch.driverMode)) {
       current.driverMode = patch.driverMode;
@@ -680,6 +729,11 @@ export class PolyBlueEngine extends EventEmitter {
 
     this.store.save();
 
+    if (current.watchdogIntervalMs !== prevWatchdog) {
+      this.restartTelemetryTimer();
+      this.log('info', `Updated telemetry & proximity watchdog cadence to ${(current.watchdogIntervalMs / 1000).toFixed(1)}s.`);
+    }
+
     if (driverChanged && patch.driverMode) {
       await this.loadDriver(patch.driverMode);
     }
@@ -692,14 +746,48 @@ export class PolyBlueEngine extends EventEmitter {
   }
 
   async importConfig(config: Partial<PersistedState>): Promise<PolyBlueSnapshot> {
+    const prevDriver = this.store.get().settings.driverMode;
+    const prevWatchdog = this.store.get().settings.watchdogIntervalMs;
+
     this.store.importConfig(config);
+    const nextSettings = this.store.get().settings;
     const savedSync = this.store.get().syncOptions;
     this.syncState = { ...this.syncState, ...savedSync };
-    this.applySavedDevicePrefs();
-    await this.recomputeSync(true);
+
+    if (nextSettings.watchdogIntervalMs !== prevWatchdog) {
+      this.restartTelemetryTimer();
+    }
+    if (nextSettings.driverMode !== prevDriver) {
+      await this.loadDriver(nextSettings.driverMode);
+    } else {
+      this.applySavedDevicePrefs();
+      await this.recomputeSync(true);
+    }
+
     const snap = await this.getSnapshot();
     this.emitEvent({ type: 'snapshot', payload: snap });
     this.log('info', 'Imported PolyBlue configuration profile.');
+    return snap;
+  }
+
+  async resetToDefaults(): Promise<PolyBlueSnapshot> {
+    this.store.reset();
+    const savedSync = this.store.get().syncOptions;
+    this.syncState = {
+      ...savedSync,
+      masterTargetLatencyMs: 0,
+      maxPhaseErrorMs: 0,
+      syncLocked: true,
+      calibratedAt: null
+    };
+    this.driftEstimators.clear();
+    this.proximityCooldown.clear();
+    this.restartTelemetryTimer();
+    await this.loadDriver(this.store.get().settings.driverMode);
+
+    const snap = await this.getSnapshot();
+    this.emitEvent({ type: 'snapshot', payload: snap });
+    this.log('info', 'Reset all PolyBlue settings, scenes, and calibrations to factory defaults.');
     return snap;
   }
 
