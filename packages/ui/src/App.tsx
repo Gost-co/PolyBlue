@@ -20,7 +20,7 @@ function readStoredTheme(): boolean {
   } catch {
     // Ignore storage restriction
   }
-  return true;
+  return false;
 }
 
 export function App() {

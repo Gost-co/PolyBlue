@@ -1,172 +1,172 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" width="1200" height="620" fill="none">
-  <rect width="1200" height="620" rx="20" fill="#080B12" stroke="#1E293B" stroke-width="1.5"/>
+  <rect width="1200" height="620" rx="20" fill="#F3F2EE" stroke="#E5E4DE" stroke-width="1.5"/>
 
-  <!-- Window Titlebar -->
-  <rect width="1200" height="48" rx="20" fill="#0D1320"/>
-  <rect y="28" width="1200" height="20" fill="#0D1320"/>
-  <line x1="0" y1="48" x2="1200" y2="48" stroke="#1E293B"/>
-  <circle cx="24" cy="24" r="5.5" fill="#F43F5E"/>
-  <circle cx="44" cy="24" r="5.5" fill="#F59E0B"/>
-  <circle cx="64" cy="24" r="5.5" fill="#10B981"/>
-  <text x="92" y="28" fill="#F8FAFC" font-family="Inter, sans-serif" font-size="13" font-weight="700">PolyBlue Studio</text>
-  <rect x="210" y="13" width="112" height="22" rx="6" fill="#0F2937" stroke="#22D3EE" stroke-opacity="0.35"/>
-  <text x="266" y="28" text-anchor="middle" fill="#67E8F9" font-family="ui-monospace, monospace" font-size="10">BT 5.4 MULTI-LINK</text>
+  <!-- Light, editorial PolyBlue Studio preview -->
+  <rect width="1200" height="48" rx="20" fill="#FBFAF7"/>
+  <rect y="28" width="1200" height="20" fill="#FBFAF7"/>
+  <line x1="0" y1="48" x2="1200" y2="48" stroke="#E5E4DE"/>
+  <circle cx="24" cy="24" r="5.5" fill="#C99B8E"/>
+  <circle cx="44" cy="24" r="5.5" fill="#C9B987"/>
+  <circle cx="64" cy="24" r="5.5" fill="#82967C"/>
+  <text x="92" y="28" fill="#252B26" font-family="Inter, sans-serif" font-size="13" font-weight="700">PolyBlue Studio</text>
+  <rect x="210" y="13" width="112" height="22" rx="6" fill="#EFF2EC" stroke="#82967C" stroke-opacity="0.35"/>
+  <text x="266" y="28" text-anchor="middle" fill="#65775F" font-family="ui-monospace, monospace" font-size="10">BT 5.4 MULTI-LINK</text>
 
   <!-- Sync Pill -->
-  <rect x="430" y="11" width="330" height="26" rx="13" fill="#0A221C" stroke="#10B981" stroke-opacity="0.45"/>
-  <text x="595" y="28" text-anchor="middle" fill="#34D399" font-family="ui-monospace, monospace" font-size="11" font-weight="600">SYNC LOCKED  |  TARGET 208ms  |  Δ 0.0ms</text>
+  <rect x="430" y="11" width="330" height="26" rx="13" fill="#F0F3ED" stroke="#82967C" stroke-opacity="0.45"/>
+  <text x="595" y="28" text-anchor="middle" fill="#71866B" font-family="ui-monospace, monospace" font-size="11" font-weight="600">SYNC LOCKED  |  TARGET 208ms  |  Δ 0.0ms</text>
 
   <!-- Scan Button -->
   <rect x="1096" y="11" width="84" height="26" rx="8" fill="#06B6D4"/>
-  <text x="1138" y="28" text-anchor="middle" fill="#082F49" font-family="Inter, sans-serif" font-size="11.5" font-weight="700">Scan</text>
+  <text x="1138" y="28" text-anchor="middle" fill="#FFFFFF" font-family="Inter, sans-serif" font-size="11.5" font-weight="700">Scan</text>
 
   <!-- Left Sidebar -->
-  <rect x="0" y="48" width="212" height="572" fill="#0B0F19"/>
-  <line x1="212" y1="48" x2="212" y2="620" stroke="#1E293B"/>
+  <rect x="0" y="48" width="212" height="572" fill="#F7F6F2"/>
+  <line x1="212" y1="48" x2="212" y2="620" stroke="#E5E4DE"/>
 
   <g transform="translate(14, 66)" font-family="Inter, sans-serif" font-size="12.5">
-    <rect width="184" height="38" rx="10" fill="#0E2433" stroke="#22D3EE" stroke-opacity="0.4"/>
-    <text x="16" y="23" fill="#67E8F9" font-weight="600">Devices Hub</text>
-    <text x="162" y="23" fill="#22D3EE" font-family="ui-monospace, monospace" font-size="11">4</text>
+    <rect width="184" height="38" rx="10" fill="#E8EEE5" stroke="#82967C" stroke-opacity="0.4"/>
+    <text x="16" y="23" fill="#65775F" font-weight="600">Devices Hub</text>
+    <text x="162" y="23" fill="#82967C" font-family="ui-monospace, monospace" font-size="11">4</text>
 
-    <text x="16" y="65" fill="#94A3B8">Sync Studio</text>
-    <text x="16" y="102" fill="#94A3B8">RF Proximity Radar</text>
-    <text x="16" y="139" fill="#94A3B8">One-Click Scenes</text>
-    <text x="16" y="176" fill="#94A3B8">OS Diagnostics</text>
+    <text x="16" y="65" fill="#777F77">Sync Studio</text>
+    <text x="16" y="102" fill="#777F77">RF Proximity Radar</text>
+    <text x="16" y="139" fill="#777F77">One-Click Scenes</text>
+    <text x="16" y="176" fill="#777F77">OS Diagnostics</text>
 
     <!-- Quick Scenes -->
-    <text x="8" y="224" fill="#64748B" font-size="10" font-weight="700" letter-spacing="1">QUICK SCENES</text>
-    <rect y="236" width="184" height="44" rx="10" fill="#101726" stroke="#1E293B"/>
-    <circle cx="16" cy="258" r="4" fill="#22D3EE"/>
-    <text x="28" y="255" fill="#E2E8F0" font-size="11.5" font-weight="600">Cinema Night Duo</text>
-    <text x="28" y="270" fill="#64748B" font-family="ui-monospace, monospace" font-size="10">2 audio · Stereo</text>
+    <text x="8" y="224" fill="#858B83" font-size="10" font-weight="700" letter-spacing="1">QUICK SCENES</text>
+    <rect y="236" width="184" height="44" rx="10" fill="#F7F7F4" stroke="#E5E4DE"/>
+    <circle cx="16" cy="258" r="4" fill="#82967C"/>
+    <text x="28" y="255" fill="#343A35" font-size="11.5" font-weight="600">Cinema Night Duo</text>
+    <text x="28" y="270" fill="#858B83" font-family="ui-monospace, monospace" font-size="10">2 audio · Stereo</text>
 
-    <rect y="288" width="184" height="44" rx="10" fill="#101726" stroke="#1E293B"/>
-    <circle cx="16" cy="310" r="4" fill="#10B981"/>
-    <text x="28" y="307" fill="#E2E8F0" font-size="11.5" font-weight="600">Split Stereo Stage</text>
-    <text x="28" y="322" fill="#64748B" font-family="ui-monospace, monospace" font-size="10">Speaker L + R</text>
+    <rect y="288" width="184" height="44" rx="10" fill="#F7F7F4" stroke="#E5E4DE"/>
+    <circle cx="16" cy="310" r="4" fill="#82967C"/>
+    <text x="28" y="307" fill="#343A35" font-size="11.5" font-weight="600">Split Stereo Stage</text>
+    <text x="28" y="322" fill="#858B83" font-family="ui-monospace, monospace" font-size="10">Speaker L + R</text>
 
     <!-- Piconet Load Box -->
-    <rect y="356" width="184" height="84" rx="12" fill="#101726" stroke="#1E293B"/>
-    <text x="12" y="378" fill="#CBD5E1" font-size="11" font-weight="600">Piconet RF Load</text>
-    <text x="172" y="378" text-anchor="end" fill="#22D3EE" font-family="ui-monospace, monospace" font-size="10.5">61%</text>
-    <rect x="12" y="390" width="160" height="7" rx="3.5" fill="#1E293B"/>
-    <rect x="12" y="390" width="98" height="7" rx="3.5" fill="#10B981"/>
-    <text x="12" y="422" fill="#64748B" font-family="ui-monospace, monospace" font-size="10">1194 kbps · LE Audio</text>
+    <rect y="356" width="184" height="84" rx="12" fill="#F7F7F4" stroke="#E5E4DE"/>
+    <text x="12" y="378" fill="#525B53" font-size="11" font-weight="600">Piconet RF Load</text>
+    <text x="172" y="378" text-anchor="end" fill="#82967C" font-family="ui-monospace, monospace" font-size="10.5">61%</text>
+    <rect x="12" y="390" width="160" height="7" rx="3.5" fill="#E5E4DE"/>
+    <rect x="12" y="390" width="98" height="7" rx="3.5" fill="#82967C"/>
+    <text x="12" y="422" fill="#858B83" font-family="ui-monospace, monospace" font-size="10">1194 kbps · LE Audio</text>
   </g>
 
   <!-- Main Workspace -->
   <!-- Top Phase Oscilloscope Panel -->
   <g transform="translate(234, 68)">
-    <rect width="626" height="256" rx="14" fill="#0B111E" stroke="#1E293B"/>
-    <text x="18" y="28" fill="#F8FAFC" font-family="Inter, sans-serif" font-size="13.5" font-weight="700">Live Multi-Channel Phase Oscilloscope</text>
-    <text x="608" y="28" text-anchor="end" fill="#34D399" font-family="ui-monospace, monospace" font-size="11">MASTER CLOCK 208.0ms</text>
+    <rect width="626" height="256" rx="14" fill="#FFFFFF" stroke="#E5E4DE"/>
+    <text x="18" y="28" fill="#252B26" font-family="Inter, sans-serif" font-size="13.5" font-weight="700">Live Multi-Channel Phase Oscilloscope</text>
+    <text x="608" y="28" text-anchor="end" fill="#71866B" font-family="ui-monospace, monospace" font-size="11">MASTER CLOCK 208.0ms</text>
 
     <!-- Scope area -->
-    <rect x="16" y="42" width="594" height="164" rx="10" fill="#070B13" stroke="#172033"/>
+    <rect x="16" y="42" width="594" height="164" rx="10" fill="#F7F7F4" stroke="#EAE9E3"/>
     <!-- Master vertical phase line -->
-    <line x1="396" y1="42" x2="396" y2="206" stroke="#10B981" stroke-width="1.8" stroke-dasharray="5 4"/>
+    <line x1="396" y1="42" x2="396" y2="206" stroke="#82967C" stroke-width="1.8" stroke-dasharray="5 4"/>
 
     <!-- Trace 1: Cyan -->
-    <text x="28" y="72" fill="#67E8F9" font-family="ui-monospace, monospace" font-size="10.5">AirPods Pro 2 · LC3 +186ms</text>
-    <path d="M 28 84 L 348 84 C 362 84, 370 62, 380 84 C 388 104, 392 54, 396 84 C 402 108, 412 66, 424 84 L 596 84" stroke="#22D3EE" stroke-width="2" fill="none"/>
-    <circle cx="396" cy="84" r="4" fill="#22D3EE"/>
+    <text x="28" y="72" fill="#65775F" font-family="ui-monospace, monospace" font-size="10.5">AirPods Pro 2 · LC3 +186ms</text>
+    <path d="M 28 84 L 348 84 C 362 84, 370 62, 380 84 C 388 104, 392 54, 396 84 C 402 108, 412 66, 424 84 L 596 84" stroke="#82967C" stroke-width="2" fill="none"/>
+    <circle cx="396" cy="84" r="4" fill="#82967C"/>
 
     <!-- Trace 2: Emerald -->
-    <text x="28" y="124" fill="#6EE7B7" font-family="ui-monospace, monospace" font-size="10.5">Sony WH-1000XM5 · LDAC +12ms</text>
-    <path d="M 28 136 L 348 136 C 362 136, 370 114, 380 136 C 388 156, 392 106, 396 136 C 402 160, 412 118, 424 136 L 596 136" stroke="#10B981" stroke-width="2" fill="none"/>
-    <circle cx="396" cy="136" r="4" fill="#10B981"/>
+    <text x="28" y="124" fill="#71866B" font-family="ui-monospace, monospace" font-size="10.5">Sony WH-1000XM5 · LDAC +12ms</text>
+    <path d="M 28 136 L 348 136 C 362 136, 370 114, 380 136 C 388 156, 392 106, 396 136 C 402 160, 412 118, 424 136 L 596 136" stroke="#82967C" stroke-width="2" fill="none"/>
+    <circle cx="396" cy="136" r="4" fill="#82967C"/>
 
     <!-- Trace 3: Violet -->
-    <text x="28" y="176" fill="#C4B5FD" font-family="ui-monospace, monospace" font-size="10.5">JBL Charge 5 (L) · SBC +22ms</text>
-    <path d="M 28 188 L 348 188 C 362 188, 370 166, 380 188 C 388 206, 392 160, 396 188 C 402 204, 412 172, 424 188 L 596 188" stroke="#A78BFA" stroke-width="2" fill="none"/>
-    <circle cx="396" cy="188" r="4" fill="#A78BFA"/>
+    <text x="28" y="176" fill="#858570" font-family="ui-monospace, monospace" font-size="10.5">JBL Charge 5 (L) · SBC +22ms</text>
+    <path d="M 28 188 L 348 188 C 362 188, 370 166, 380 188 C 388 206, 392 160, 396 188 C 402 204, 412 172, 424 188 L 596 188" stroke="#9A9A84" stroke-width="2" fill="none"/>
+    <circle cx="396" cy="188" r="4" fill="#9A9A84"/>
 
     <!-- Controls row -->
-    <rect x="16" y="216" width="152" height="28" rx="8" fill="#F8FAFC"/>
-    <text x="92" y="234" text-anchor="middle" fill="#0F172A" font-family="Inter, sans-serif" font-size="11" font-weight="700">▶ Hear Live Sync Test</text>
+    <rect x="16" y="216" width="152" height="28" rx="8" fill="#252B26"/>
+    <text x="92" y="234" text-anchor="middle" fill="#283029" font-family="Inter, sans-serif" font-size="11" font-weight="700">▶ Hear Live Sync Test</text>
 
-    <rect x="180" y="216" width="132" height="28" rx="8" fill="#0A231C" stroke="#10B981" stroke-opacity="0.45"/>
-    <text x="246" y="234" text-anchor="middle" fill="#34D399" font-family="Inter, sans-serif" font-size="11" font-weight="600">Sync Lock: ON</text>
+    <rect x="180" y="216" width="132" height="28" rx="8" fill="#F0F3ED" stroke="#82967C" stroke-opacity="0.45"/>
+    <text x="246" y="234" text-anchor="middle" fill="#71866B" font-family="Inter, sans-serif" font-size="11" font-weight="600">Sync Lock: ON</text>
 
     <rect x="488" y="216" width="122" height="28" rx="8" fill="#06B6D4"/>
-    <text x="549" y="234" text-anchor="middle" fill="#082F49" font-family="Inter, sans-serif" font-size="11" font-weight="700">Auto-Align All</text>
+    <text x="549" y="234" text-anchor="middle" fill="#FFFFFF" font-family="Inter, sans-serif" font-size="11" font-weight="700">Auto-Align All</text>
   </g>
 
   <!-- Right Panel: Spatial RF Radar -->
   <g transform="translate(876, 68)">
-    <rect width="302" height="256" rx="14" fill="#0B111E" stroke="#1E293B"/>
-    <text x="16" y="28" fill="#F8FAFC" font-family="Inter, sans-serif" font-size="13.5" font-weight="700">RF Proximity Radar</text>
-    <circle cx="151" cy="142" r="88" stroke="#22D3EE" stroke-opacity="0.18"/>
-    <circle cx="151" cy="142" r="56" stroke="#22D3EE" stroke-opacity="0.18"/>
-    <circle cx="151" cy="142" r="26" stroke="#22D3EE" stroke-opacity="0.25"/>
-    <line x1="151" y1="142" x2="212" y2="84" stroke="#22D3EE" stroke-opacity="0.7" stroke-width="1.6"/>
-    <line x1="151" y1="142" x2="108" y2="96" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4 3"/>
-    <line x1="151" y1="142" x2="196" y2="176" stroke="#10B981" stroke-width="1.5" stroke-dasharray="4 3"/>
-    <line x1="151" y1="142" x2="104" y2="188" stroke="#A78BFA" stroke-width="1.5" stroke-dasharray="4 3"/>
-    <circle cx="151" cy="142" r="6" fill="#22D3EE"/>
-    <circle cx="108" cy="96" r="5" fill="#10B981"/>
-    <circle cx="196" cy="176" r="5" fill="#10B981"/>
-    <circle cx="104" cy="188" r="5" fill="#A78BFA"/>
-    <text x="16" y="242" fill="#64748B" font-family="ui-monospace, monospace" font-size="10">4 active links · -47 to -58 dBm</text>
+    <rect width="302" height="256" rx="14" fill="#FFFFFF" stroke="#E5E4DE"/>
+    <text x="16" y="28" fill="#252B26" font-family="Inter, sans-serif" font-size="13.5" font-weight="700">RF Proximity Radar</text>
+    <circle cx="151" cy="142" r="88" stroke="#82967C" stroke-opacity="0.18"/>
+    <circle cx="151" cy="142" r="56" stroke="#82967C" stroke-opacity="0.18"/>
+    <circle cx="151" cy="142" r="26" stroke="#82967C" stroke-opacity="0.25"/>
+    <line x1="151" y1="142" x2="212" y2="84" stroke="#82967C" stroke-opacity="0.7" stroke-width="1.6"/>
+    <line x1="151" y1="142" x2="108" y2="96" stroke="#82967C" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <line x1="151" y1="142" x2="196" y2="176" stroke="#82967C" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <line x1="151" y1="142" x2="104" y2="188" stroke="#9A9A84" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <circle cx="151" cy="142" r="6" fill="#82967C"/>
+    <circle cx="108" cy="96" r="5" fill="#82967C"/>
+    <circle cx="196" cy="176" r="5" fill="#82967C"/>
+    <circle cx="104" cy="188" r="5" fill="#9A9A84"/>
+    <text x="16" y="242" fill="#858B83" font-family="ui-monospace, monospace" font-size="10">4 active links · -47 to -58 dBm</text>
   </g>
 
   <!-- Bottom Row: Connected Multi-Device Cards -->
   <g transform="translate(234, 342)" font-family="Inter, sans-serif">
     <!-- Card 1 -->
-    <rect width="306" height="196" rx="14" fill="#0F1727" stroke="#22D3EE" stroke-opacity="0.45"/>
-    <circle cx="24" cy="28" r="5" fill="#10B981"/>
-    <text x="38" y="32" fill="#F8FAFC" font-size="14" font-weight="700">Sony WH-1000XM5</text>
-    <text x="20" y="54" fill="#64748B" font-family="ui-monospace, monospace" font-size="11">7C:96:D2:4A:1B:88 · 88% batt</text>
-    <rect x="20" y="68" width="110" height="22" rx="6" fill="#172554"/>
-    <text x="75" y="83" text-anchor="middle" fill="#93C5FD" font-family="ui-monospace, monospace" font-size="10.5">LDAC · 196ms</text>
-    <rect x="138" y="68" width="128" height="22" rx="6" fill="#064E3B"/>
-    <text x="202" y="83" text-anchor="middle" fill="#6EE7B7" font-family="ui-monospace, monospace" font-size="10.5">+12ms · STEREO</text>
-    <rect x="20" y="114" width="218" height="6" rx="3" fill="#1E293B"/>
-    <rect x="20" y="114" width="180" height="6" rx="3" fill="#22D3EE"/>
-    <text x="286" y="121" text-anchor="end" fill="#E2E8F0" font-family="ui-monospace, monospace" font-size="11">82%</text>
-    <text x="20" y="172" fill="#34D399" font-family="ui-monospace, monospace" font-size="11">Δ 0.0ms · 990 kbps</text>
+    <rect width="306" height="196" rx="14" fill="#FFFFFF" stroke="#82967C" stroke-opacity="0.45"/>
+    <circle cx="24" cy="28" r="5" fill="#82967C"/>
+    <text x="38" y="32" fill="#252B26" font-size="14" font-weight="700">Sony WH-1000XM5</text>
+    <text x="20" y="54" fill="#858B83" font-family="ui-monospace, monospace" font-size="11">7C:96:D2:4A:1B:88 · 88% batt</text>
+    <rect x="20" y="68" width="110" height="22" rx="6" fill="#EFF1EE"/>
+    <text x="75" y="83" text-anchor="middle" fill="#687C65" font-family="ui-monospace, monospace" font-size="10.5">LDAC · 196ms</text>
+    <rect x="138" y="68" width="128" height="22" rx="6" fill="#E8EEE5"/>
+    <text x="202" y="83" text-anchor="middle" fill="#71866B" font-family="ui-monospace, monospace" font-size="10.5">+12ms · STEREO</text>
+    <rect x="20" y="114" width="218" height="6" rx="3" fill="#E5E4DE"/>
+    <rect x="20" y="114" width="180" height="6" rx="3" fill="#82967C"/>
+    <text x="286" y="121" text-anchor="end" fill="#343A35" font-family="ui-monospace, monospace" font-size="11">82%</text>
+    <text x="20" y="172" fill="#71866B" font-family="ui-monospace, monospace" font-size="11">Δ 0.0ms · 990 kbps</text>
 
     <!-- Card 2 -->
     <g transform="translate(320, 0)">
-      <rect width="306" height="196" rx="14" fill="#0F1727" stroke="#22D3EE" stroke-opacity="0.45"/>
-      <circle cx="24" cy="28" r="5" fill="#10B981"/>
-      <text x="38" y="32" fill="#F8FAFC" font-size="14" font-weight="700">AirPods Pro 2</text>
-      <text x="20" y="54" fill="#64748B" font-family="ui-monospace, monospace" font-size="11">40:98:AD:9E:33:12 · 76% batt</text>
-      <rect x="20" y="68" width="102" height="22" rx="6" fill="#172554"/>
-      <text x="71" y="83" text-anchor="middle" fill="#93C5FD" font-family="ui-monospace, monospace" font-size="10.5">LC3 · 22ms</text>
-      <rect x="130" y="68" width="136" height="22" rx="6" fill="#064E3B"/>
-      <text x="198" y="83" text-anchor="middle" fill="#6EE7B7" font-family="ui-monospace, monospace" font-size="10.5">+186ms · STEREO</text>
-      <rect x="20" y="114" width="218" height="6" rx="3" fill="#1E293B"/>
-      <rect x="20" y="114" width="166" height="6" rx="3" fill="#22D3EE"/>
-      <text x="286" y="121" text-anchor="end" fill="#E2E8F0" font-family="ui-monospace, monospace" font-size="11">78%</text>
-      <text x="20" y="172" fill="#34D399" font-family="ui-monospace, monospace" font-size="11">Δ 0.0ms · 192 kbps</text>
+      <rect width="306" height="196" rx="14" fill="#FFFFFF" stroke="#82967C" stroke-opacity="0.45"/>
+      <circle cx="24" cy="28" r="5" fill="#82967C"/>
+      <text x="38" y="32" fill="#252B26" font-size="14" font-weight="700">AirPods Pro 2</text>
+      <text x="20" y="54" fill="#858B83" font-family="ui-monospace, monospace" font-size="11">40:98:AD:9E:33:12 · 76% batt</text>
+      <rect x="20" y="68" width="102" height="22" rx="6" fill="#EFF1EE"/>
+      <text x="71" y="83" text-anchor="middle" fill="#687C65" font-family="ui-monospace, monospace" font-size="10.5">LC3 · 22ms</text>
+      <rect x="130" y="68" width="136" height="22" rx="6" fill="#E8EEE5"/>
+      <text x="198" y="83" text-anchor="middle" fill="#71866B" font-family="ui-monospace, monospace" font-size="10.5">+186ms · STEREO</text>
+      <rect x="20" y="114" width="218" height="6" rx="3" fill="#E5E4DE"/>
+      <rect x="20" y="114" width="166" height="6" rx="3" fill="#82967C"/>
+      <text x="286" y="121" text-anchor="end" fill="#343A35" font-family="ui-monospace, monospace" font-size="11">78%</text>
+      <text x="20" y="172" fill="#71866B" font-family="ui-monospace, monospace" font-size="11">Δ 0.0ms · 192 kbps</text>
     </g>
 
     <!-- Card 3 -->
     <g transform="translate(640, 0)">
-      <rect width="304" height="196" rx="14" fill="#0F1727" stroke="#10B981" stroke-opacity="0.45"/>
-      <circle cx="24" cy="28" r="5" fill="#10B981"/>
-      <text x="38" y="32" fill="#F8FAFC" font-size="14" font-weight="700">JBL Charge 5</text>
-      <text x="20" y="54" fill="#64748B" font-family="ui-monospace, monospace" font-size="11">58:FC:C6:81:F0:2A · 94% batt</text>
-      <rect x="20" y="68" width="102" height="22" rx="6" fill="#172554"/>
-      <text x="71" y="83" text-anchor="middle" fill="#93C5FD" font-family="ui-monospace, monospace" font-size="10.5">SBC · 186ms</text>
-      <rect x="130" y="68" width="136" height="22" rx="6" fill="#064E3B"/>
-      <text x="198" y="83" text-anchor="middle" fill="#6EE7B7" font-family="ui-monospace, monospace" font-size="10.5">+22ms · LEFT (L)</text>
-      <rect x="20" y="114" width="218" height="6" rx="3" fill="#1E293B"/>
-      <rect x="20" y="114" width="190" height="6" rx="3" fill="#10B981"/>
-      <text x="284" y="121" text-anchor="end" fill="#E2E8F0" font-family="ui-monospace, monospace" font-size="11">85%</text>
-      <text x="20" y="172" fill="#34D399" font-family="ui-monospace, monospace" font-size="11">Δ 0.0ms · 328 kbps</text>
+      <rect width="304" height="196" rx="14" fill="#FFFFFF" stroke="#82967C" stroke-opacity="0.45"/>
+      <circle cx="24" cy="28" r="5" fill="#82967C"/>
+      <text x="38" y="32" fill="#252B26" font-size="14" font-weight="700">JBL Charge 5</text>
+      <text x="20" y="54" fill="#858B83" font-family="ui-monospace, monospace" font-size="11">58:FC:C6:81:F0:2A · 94% batt</text>
+      <rect x="20" y="68" width="102" height="22" rx="6" fill="#EFF1EE"/>
+      <text x="71" y="83" text-anchor="middle" fill="#687C65" font-family="ui-monospace, monospace" font-size="10.5">SBC · 186ms</text>
+      <rect x="130" y="68" width="136" height="22" rx="6" fill="#E8EEE5"/>
+      <text x="198" y="83" text-anchor="middle" fill="#71866B" font-family="ui-monospace, monospace" font-size="10.5">+22ms · LEFT (L)</text>
+      <rect x="20" y="114" width="218" height="6" rx="3" fill="#E5E4DE"/>
+      <rect x="20" y="114" width="190" height="6" rx="3" fill="#82967C"/>
+      <text x="284" y="121" text-anchor="end" fill="#343A35" font-family="ui-monospace, monospace" font-size="11">85%</text>
+      <text x="20" y="172" fill="#71866B" font-family="ui-monospace, monospace" font-size="11">Δ 0.0ms · 328 kbps</text>
     </g>
   </g>
 
   <!-- Floating Multi-Connect Action Bar -->
-  <rect x="448" y="556" width="504" height="44" rx="14" fill="#0E1729" stroke="#22D3EE" stroke-opacity="0.5" stroke-width="1.4"/>
-  <circle cx="474" cy="578" r="10" fill="#22D3EE"/>
-  <text x="474" y="582" text-anchor="middle" fill="#082F49" font-family="ui-monospace, monospace" font-size="11" font-weight="800">3</text>
-  <text x="494" y="582" fill="#F8FAFC" font-family="Inter, sans-serif" font-size="12" font-weight="600">Selected</text>
-  <rect x="562" y="564" width="214" height="28" rx="9" fill="#22D3EE"/>
-  <text x="669" y="582" text-anchor="middle" fill="#082F49" font-family="Inter, sans-serif" font-size="11.5" font-weight="700">⚡ Connect 3 Simultaneously</text>
-  <rect x="786" y="564" width="110" height="28" rx="9" fill="#1E293B"/>
-  <text x="841" y="582" text-anchor="middle" fill="#E2E8F0" font-family="Inter, sans-serif" font-size="11">Save as Scene</text>
+  <rect x="448" y="556" width="504" height="44" rx="14" fill="#0E1729" stroke="#82967C" stroke-opacity="0.5" stroke-width="1.4"/>
+  <circle cx="474" cy="578" r="10" fill="#82967C"/>
+  <text x="474" y="582" text-anchor="middle" fill="#FFFFFF" font-family="ui-monospace, monospace" font-size="11" font-weight="800">3</text>
+  <text x="494" y="582" fill="#252B26" font-family="Inter, sans-serif" font-size="12" font-weight="600">Selected</text>
+  <rect x="562" y="564" width="214" height="28" rx="9" fill="#82967C"/>
+  <text x="669" y="582" text-anchor="middle" fill="#FFFFFF" font-family="Inter, sans-serif" font-size="11.5" font-weight="700">⚡ Connect 3 Simultaneously</text>
+  <rect x="786" y="564" width="110" height="28" rx="9" fill="#E5E4DE"/>
+  <text x="841" y="582" text-anchor="middle" fill="#343A35" font-family="Inter, sans-serif" font-size="11">Save as Scene</text>
 </svg>
